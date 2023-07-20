@@ -20,6 +20,7 @@ const MovieDetails = () => {
 
     (async () => {
       const response = await fetchMovieById(movieId);
+
       setImagePath(response.poster_path);
       setTitle(response.title);
       setScore((response.vote_average * 10).toFixed());
@@ -32,7 +33,10 @@ const MovieDetails = () => {
     <Section>
       <BackBtn to={backPath}>{`<- Go back`}</BackBtn>
       <MainInfo>
-        <Image src={`https://image.tmdb.org/t/p/w500${imagePath}`} alt={title} />
+        <Image
+          src={imagePath && `https://image.tmdb.org/t/p/w500${imagePath}`}
+          alt={title}
+        />
         <Title>{title}</Title>
         <Text>User score: {score}%</Text>
         <SubTitle>Overview</SubTitle>
