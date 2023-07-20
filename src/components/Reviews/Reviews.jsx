@@ -6,7 +6,7 @@ import { useParams } from 'react-router-dom';
 import { Author, Content, SorryText } from './Reviews.styled';
 
 const Reviews = () => {
-  const [reviews, setReviews] = useState([]);
+  const [reviews, setReviews] = useState(null);
   const { movieId } = useParams();
 
   useEffect(() => {
@@ -18,9 +18,9 @@ const Reviews = () => {
 
   return (
     <>
-      {reviews.length > 0 ? (
+      {reviews?.length > 0 ? (
         <List>
-          {reviews?.map(({ id, author, content }) => {
+          {reviews.map(({ id, author, content }) => {
             return (
               <li key={id}>
                 <Author>Author: {author}</Author>
