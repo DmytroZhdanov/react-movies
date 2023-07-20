@@ -1,12 +1,22 @@
 import axios from "axios";
 
 const API_KEY = '519ac6d7fa65fad3709213360518958a';
+const BASE_URL = 'https://api.themoviedb.org/3';
+const TRENDING_DAY_ENDPOINT = '/trending/movie/day';
+const SEARCH_QUERY_ENDPOINT = '/search/movie';
 
 async function fetchDayTrends() {
   const response = await axios.get(
-    `https://api.themoviedb.org/3/trending/movie/day?api_key=${API_KEY}&language=en-US`
+    `${BASE_URL}${TRENDING_DAY_ENDPOINT}?api_key=${API_KEY}&language=en-US`
   );
   return response.data
 }
 
-export { fetchDayTrends };
+async function fetchMovieByQuery(query) {
+  const response = await axios.get(
+    `${BASE_URL}${SEARCH_QUERY_ENDPOINT}?api_key=${API_KEY}&language=en-US&query=${query}`
+  );
+  return response.data
+}
+
+export { fetchDayTrends, fetchMovieByQuery };

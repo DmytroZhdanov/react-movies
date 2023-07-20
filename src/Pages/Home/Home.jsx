@@ -5,7 +5,7 @@ import { Link } from 'react-router-dom';
 import { List, Section, Title } from './Home.styled';
 
 const Home = () => {
-  const [dayTrends, setDayTrends] = useState([]);
+  const [dayTrends, setDayTrends] = useState(null);
   useEffect(() => {
     (async () => {
       const { results } = await fetchDayTrends();
@@ -17,7 +17,7 @@ const Home = () => {
     <Section>
       <Title>Trending today</Title>
       <List>
-        {dayTrends.map(({ title, id }) => {
+        {dayTrends?.map(({ title, id }) => {
           return (
             <li key={id}>
               <Link to={`movies/${id}`}>{title}</Link>
