@@ -21,7 +21,7 @@ export const BackBtn = styled(Link)`
 `;
 
 export const MainInfo = styled.div`
-  height: 450px;
+  max-height: 450px;
   display: flex;
   flex-direction: column;
   flex-wrap: wrap;

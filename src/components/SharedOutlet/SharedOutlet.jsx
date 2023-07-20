@@ -1,5 +1,6 @@
-import { Outlet } from "react-router-dom";
-import { Header, List, Navigation, StyledLink } from "./SharedOutlet.styled";
+import { Suspense } from 'react';
+import { Outlet } from 'react-router-dom';
+import { Header, List, Navigation, StyledLink } from './SharedOutlet.styled';
 
 const SharedOutlet = () => {
   return (
@@ -17,7 +18,9 @@ const SharedOutlet = () => {
         </Navigation>
       </Header>
       <main>
-        <Outlet/>
+        <Suspense>
+          <Outlet />
+        </Suspense>
       </main>
     </>
   );

@@ -31,7 +31,7 @@ async function fetchReviews(id) {
   const response = await axios.get(
     `${BASE_URL}${BY_ID_ENDPOINT}/${id}/reviews?api_key=${API_KEY}&language=en-US`
   );
-  return response.data;
+  return response.data.results;
 }
 
 async function fetchCast(id) {

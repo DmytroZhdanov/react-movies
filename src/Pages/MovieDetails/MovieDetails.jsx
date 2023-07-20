@@ -1,9 +1,18 @@
 import { fetchMovieById } from 'ApiService/ApiService';
 import { Section, Title } from 'Pages/Home/Home.styled';
-import { useState } from 'react';
+import { Suspense, useState } from 'react';
 import { useEffect } from 'react';
 import { Link, Outlet, useLocation, useParams } from 'react-router-dom';
-import { AdditionalInfo, AdditionalTitle, BackBtn, Image, List, MainInfo, SubTitle, Text } from './MovieDetails.styled';
+import {
+  AdditionalInfo,
+  AdditionalTitle,
+  BackBtn,
+  Image,
+  List,
+  MainInfo,
+  SubTitle,
+  Text,
+} from './MovieDetails.styled';
 
 const MovieDetails = () => {
   const [imagePath, setImagePath] = useState(null);
@@ -17,7 +26,6 @@ const MovieDetails = () => {
   const { movieId } = useParams();
 
   useEffect(() => {
-
     (async () => {
       const response = await fetchMovieById(movieId);
 
@@ -48,14 +56,20 @@ const MovieDetails = () => {
         <AdditionalTitle>Additional information</AdditionalTitle>
         <List>
           <li>
-            <Link to="cast">Cast</Link>
+            <Link to="cast" state={{ from: backPath }}>
+              Cast
+            </Link>
           </li>
           <li>
-            <Link to="reviews">Reviews</Link>
+            <Link to="reviews" state={{ from: backPath }}>
+              Reviews
+            </Link>
           </li>
         </List>
       </AdditionalInfo>
-      <Outlet />
+      <Suspense>
+        <Outlet />
+      </Suspense>
     </Section>
   );
 };
