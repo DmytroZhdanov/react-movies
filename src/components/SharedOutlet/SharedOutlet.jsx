@@ -18,7 +18,7 @@ const SharedOutlet = () => {
         </Navigation>
       </Header>
       <main>
-        <Suspense fallback={<div>Loading...</div>}>
+        <Suspense fallback={<h1>Loading...</h1>}>
           <Outlet />
         </Suspense>
       </main>

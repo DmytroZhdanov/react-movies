@@ -7,38 +7,58 @@ const SEARCH_QUERY_ENDPOINT = '/search/movie';
 const BY_ID_ENDPOINT = '/movie';
 
 async function fetchDayTrends() {
-  const response = await axios.get(
-    `${BASE_URL}${TRENDING_DAY_ENDPOINT}?api_key=${API_KEY}&language=en-US`
-  );
-  return response.data;
+  try {
+    const response = await axios.get(
+      `${BASE_URL}${TRENDING_DAY_ENDPOINT}?api_key=${API_KEY}&language=en-US`
+    );
+    return response.data;
+  } catch (error) {
+    console.error(error.message);
+  }
 }
 
 async function fetchMovieByQuery(query) {
-  const response = await axios.get(
-    `${BASE_URL}${SEARCH_QUERY_ENDPOINT}?api_key=${API_KEY}&language=en-US&query=${query}`
-  );
-  return response.data;
+  try {
+    const response = await axios.get(
+      `${BASE_URL}${SEARCH_QUERY_ENDPOINT}?api_key=${API_KEY}&language=en-US&query=${query}`
+    );
+    return response.data;
+  } catch (error) {
+    console.error(error.message);
+  }
 }
 
 async function fetchMovieById(id) {
-  const response = await axios.get(
-    `${BASE_URL}${BY_ID_ENDPOINT}/${id}?api_key=${API_KEY}&language=en-US`
-  );
-  return response.data;
+  try {
+    const response = await axios.get(
+      `${BASE_URL}${BY_ID_ENDPOINT}/${id}?api_key=${API_KEY}&language=en-US`
+    );
+    return response.data;
+  } catch (error) {
+    console.error(error.message);
+  }
 }
 
 async function fetchReviews(id) {
-  const response = await axios.get(
-    `${BASE_URL}${BY_ID_ENDPOINT}/${id}/reviews?api_key=${API_KEY}&language=en-US`
-  );
-  return response.data.results;
+  try {
+    const response = await axios.get(
+      `${BASE_URL}${BY_ID_ENDPOINT}/${id}/reviews?api_key=${API_KEY}&language=en-US`
+    );
+    return response.data.results;
+  } catch (error) {
+    console.error(error.message);
+  }
 }
 
 async function fetchCast(id) {
-  const response = await axios.get(
-    `${BASE_URL}${BY_ID_ENDPOINT}/${id}/credits?api_key=${API_KEY}&language=en-US`
-  );
-  return response.data.cast;
+  try {
+    const response = await axios.get(
+      `${BASE_URL}${BY_ID_ENDPOINT}/${id}/credits?api_key=${API_KEY}&language=en-US`
+    );
+    return response.data.cast;
+  } catch (error) {
+    console.error(error.message);
+  }
 }
 
 export {

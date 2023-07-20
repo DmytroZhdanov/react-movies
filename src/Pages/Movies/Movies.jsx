@@ -14,10 +14,15 @@ const Movies = () => {
   useEffect(() => {
     if (!query) return;
 
-    (async () => {
-      const response = await fetchMovieByQuery(query);
-      setMovies(response.results);
-    })();
+    const getMovies = async () => {
+      try {
+        const response = await fetchMovieByQuery(query);
+        setMovies(response.results);
+      } catch (error) {
+        console.error(error.message);
+      }
+    }
+    getMovies();
   }, [query]);
 
   const handleSubmit = e => {

@@ -9,10 +9,15 @@ const Cast = () => {
   const { movieId } = useParams();
 
   useEffect(() => {
-    (async () => {
-      const response = await fetchCast(movieId);
-      setCast(response);
-    })();
+    const getCast = async () => {
+      try {
+        const response = await fetchCast(movieId);
+        setCast(response);
+      } catch (error) {
+        console.error(error.message);
+      }
+    };
+    getCast();
   }, [movieId]);
 
   return (

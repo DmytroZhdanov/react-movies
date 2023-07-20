@@ -9,10 +9,15 @@ const Home = () => {
   const location = useLocation();
 
   useEffect(() => {
-    (async () => {
-      const { results } = await fetchDayTrends();
-      setDayTrends(results);
-    })();
+    const getDayTrends = async () => {
+      try {
+        const { results } = await fetchDayTrends();
+        setDayTrends(results);
+      } catch (error) {
+        console.error(error.message);
+      }
+    };
+    getDayTrends();
   }, []);
 
   return (
@@ -22,7 +27,9 @@ const Home = () => {
         {dayTrends?.map(({ title, id }) => {
           return (
             <li key={id}>
-              <Link to={`movies/${id}`} state={{from: location}}>{title}</Link>
+              <Link to={`movies/${id}`} state={{ from: location }}>
+                {title}
+              </Link>
             </li>
           );
         })}

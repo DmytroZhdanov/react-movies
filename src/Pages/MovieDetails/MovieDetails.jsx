@@ -26,15 +26,20 @@ const MovieDetails = () => {
   const { movieId } = useParams();
 
   useEffect(() => {
-    (async () => {
-      const response = await fetchMovieById(movieId);
+    const getMovieDetails = async () => {
+      try {
+        const response = await fetchMovieById(movieId);
 
-      setImagePath(response.poster_path);
-      setTitle(response.title);
-      setScore((response.vote_average * 10).toFixed());
-      setOverview(response.overview);
-      setGenres(response.genres.map(({ name }) => name).join(', '));
-    })();
+        setImagePath(response.poster_path);
+        setTitle(response.title);
+        setScore((response.vote_average * 10).toFixed());
+        setOverview(response.overview);
+        setGenres(response.genres.map(({ name }) => name).join(', '));
+      } catch (error) {
+        console.error(error.message);
+      }
+    };
+    getMovieDetails();
   }, [movieId]);
 
   return (
@@ -67,7 +72,7 @@ const MovieDetails = () => {
           </li>
         </List>
       </AdditionalInfo>
-      <Suspense fallback={<div>Loading...</div>}>
+      <Suspense fallback={<h1>Loading...</h1>}>
         <Outlet />
       </Suspense>
     </Section>
