@@ -2,13 +2,14 @@ import { fetchMovieByQuery } from 'ApiService/ApiService';
 import { List, Section } from 'Pages/Home/Home.styled';
 import { useEffect } from 'react';
 import { useState } from 'react';
-import { Link, useSearchParams } from 'react-router-dom';
+import { Link, useLocation, useSearchParams } from 'react-router-dom';
 import { Form } from './Movies.styled';
 
 const Movies = () => {
   const [movies, setMovies] = useState(null);
   const [searchParams, setSearchParams] = useSearchParams();
   const query = searchParams.get('query');
+  const location = useLocation();
 
   useEffect(() => {
     if (!query) return;
@@ -40,7 +41,9 @@ const Movies = () => {
         {movies?.map(({ id, title }) => {
           return (
             <li key={id}>
-              <Link to={`${id}`}>{title}</Link>
+              <Link to={`${id}`} state={{ from: location }}>
+                {title}
+              </Link>
             </li>
           );
         })}
