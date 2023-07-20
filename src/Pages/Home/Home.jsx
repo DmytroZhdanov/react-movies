@@ -13,7 +13,7 @@ const Home = () => {
       const { results } = await fetchDayTrends();
       setDayTrends(results);
     })();
-  });
+  }, []);
 
   return (
     <Section>
