@@ -25,6 +25,9 @@ const MovieDetails = () => {
   useEffect(() => {
     const getMovieDetails = async () => {
       setIsLoading(true);
+      setHasError(false);
+      setMovie(null);
+      
       try {
         const response = await fetchMovieById(movieId);
         setMovie(response);
@@ -60,9 +63,7 @@ const MovieDetails = () => {
           </Suspense>
         </>
       )}
-      {hasError && (
-        <SorryText>{`Sorry... Something went wrong :(`}</SorryText>
-      )}
+      {hasError && <SorryText>{`Sorry... Something went wrong :(`}</SorryText>}
     </Section>
   );
 };

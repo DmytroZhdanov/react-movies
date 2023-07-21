@@ -21,6 +21,9 @@ const Movies = () => {
 
     const getMovies = async () => {
       setIsLoading(true);
+      setHasError(false);
+      setMovies(null);
+      
       try {
         const response = await fetchMovieByQuery(query);
         if (response.results.length > 0) {
@@ -48,7 +51,7 @@ const Movies = () => {
     setSearchParams({ query: searchQuery });
   };
 
-  const handleChange = (e) => {
+  const handleChange = e => {
     setInputValue(e.target.value);
   };
 

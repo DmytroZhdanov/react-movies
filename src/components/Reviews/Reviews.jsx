@@ -15,6 +15,9 @@ const Reviews = () => {
   useEffect(() => {
     const getReviews = async () => {
       setIsLoading(true);
+      setHasError(false);
+      setReviews(null);
+      
       try {
         const response = await fetchReviews(movieId);
 

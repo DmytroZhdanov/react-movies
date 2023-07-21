@@ -14,6 +14,9 @@ const Home = () => {
   useEffect(() => {
     const getDayTrends = async () => {
       setIsLoading(true);
+      setHasError(false);
+      setDayTrends(null);
+
       try {
         const { results } = await fetchDayTrends();
         if (results.length > 0) {

@@ -16,6 +16,9 @@ const Cast = () => {
   useEffect(() => {
     const getCast = async () => {
       setIsLoading(true);
+      setHasError(false);
+      setCast(null);
+      
       try {
         const response = await fetchCast(movieId);
         if (response.length > 0) {
