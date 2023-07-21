@@ -11,7 +11,7 @@ const MoviesList = ({ movies }) => {
         return (
           <li key={id}>
             <Link
-              to={location.pathname === '/movies' ? `${id}` : `movies/${id}`}
+              to={`/movies/${id}`}
               state={{ from: location }}
             >
               {title || original_title}
