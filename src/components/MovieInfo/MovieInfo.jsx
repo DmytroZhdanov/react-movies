@@ -1,4 +1,5 @@
 import defaultImage from '../../Images/image-not-found.jpg';
+import PropTypes from 'prop-types';
 import { Title } from 'Pages/Home/Home.styled';
 import { Image, MainInfo, SubTitle, Text } from './MovieInfo.styled';
 
@@ -31,6 +32,22 @@ const MovieInfo = ({ movie }) => {
       <Text>{genresString}</Text>
     </MainInfo>
   );
+};
+
+MovieInfo.propTypes = {
+  movie: PropTypes.shape({
+    title: PropTypes.string.isRequired,
+    overview: PropTypes.string.isRequired,
+    genres: PropTypes.arrayOf(
+      PropTypes.shape({
+        id: PropTypes.number.isRequired,
+        name: PropTypes.string.isRequired,
+      }).isRequired
+    ).isRequired,
+    original_title: PropTypes.string.isRequired,
+    poster_path: PropTypes.string.isRequired,
+    vote_average: PropTypes.number.isRequired,
+  }).isRequired,
 };
 
 export default MovieInfo;
