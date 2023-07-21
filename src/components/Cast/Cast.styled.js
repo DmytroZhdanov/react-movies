@@ -14,6 +14,8 @@ export const Actor = styled.li`
 
 export const Image = styled.img`
   width: 100%;
+  height: 225px;
+  object-fit: cover;
 `;
 
 export const Name = styled.h3`

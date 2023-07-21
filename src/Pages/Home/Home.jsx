@@ -1,20 +1,30 @@
 import { fetchDayTrends } from 'ApiService/ApiService';
+import Loader from 'components/Loader/Loader';
+import MoviesList from 'components/MoviesList/MoviesList';
+import { SorryText } from 'components/Reviews/Reviews.styled';
 import { useState } from 'react';
 import { useEffect } from 'react';
-import { Link, useLocation } from 'react-router-dom';
-import { List, Section, Title } from './Home.styled';
+import { Section, Title } from './Home.styled';
 
 const Home = () => {
   const [dayTrends, setDayTrends] = useState(null);
-  const location = useLocation();
+  const [isLoading, setIsLoading] = useState(false);
+  const [hasError, setHasError] = useState(false);
 
   useEffect(() => {
     const getDayTrends = async () => {
+      setIsLoading(true);
       try {
         const { results } = await fetchDayTrends();
-        setDayTrends(results);
-      } catch (error) {
-        console.error(error.message);
+        if (results.length > 0) {
+          setDayTrends(results);
+        } else {
+          throw new Error();
+        }
+      } catch {
+        setHasError(true);
+      } finally {
+        setIsLoading(false);
       }
     };
     getDayTrends();
@@ -23,17 +33,11 @@ const Home = () => {
   return (
     <Section>
       <Title>Trending today</Title>
-      <List>
-        {dayTrends?.map(({ title, id }) => {
-          return (
-            <li key={id}>
-              <Link to={`movies/${id}`} state={{ from: location }}>
-                {title}
-              </Link>
-            </li>
-          );
-        })}
-      </List>
+      {isLoading && <Loader />}
+      {dayTrends && <MoviesList trends={dayTrends} />}
+      {hasError && (
+        <SorryText>Sorry... We couldn't find any day trends</SorryText>
+      )}
     </Section>
   );
 };

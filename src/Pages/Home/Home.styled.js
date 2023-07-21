@@ -9,9 +9,3 @@ export const Title = styled.h1`
   font-weight: 700;
   margin-bottom: 20px;
 `;
-
-export const List = styled.ul`
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-`

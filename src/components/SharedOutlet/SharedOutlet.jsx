@@ -1,3 +1,4 @@
+import Loader from 'components/Loader/Loader';
 import { Suspense } from 'react';
 import { Outlet } from 'react-router-dom';
 import { Header, List, Navigation, StyledLink } from './SharedOutlet.styled';
@@ -18,7 +19,7 @@ const SharedOutlet = () => {
         </Navigation>
       </Header>
       <main>
-        <Suspense fallback={<h1>Loading...</h1>}>
+        <Suspense fallback={<Loader/>}>
           <Outlet />
         </Suspense>
       </main>

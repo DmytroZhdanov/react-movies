@@ -12,4 +12,4 @@ export const Content = styled.p`
 export const SorryText = styled.p`
   margin-top: 20px;
   text-align: center;
-`
+`;

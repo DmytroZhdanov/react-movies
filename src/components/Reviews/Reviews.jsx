@@ -1,3 +1,4 @@
+import Loader from '../Loader/Loader';
 import { fetchReviews } from 'ApiService/ApiService';
 import { List } from 'components/Cast/Cast.styled';
 import { useEffect } from 'react';
@@ -7,15 +8,25 @@ import { Author, Content, SorryText } from './Reviews.styled';
 
 const Reviews = () => {
   const [reviews, setReviews] = useState(null);
+  const [isLoading, setIsLoading] = useState(false);
+  const [hasError, setHasError] = useState(false);
   const { movieId } = useParams();
 
   useEffect(() => {
     const getReviews = async () => {
+      setIsLoading(true);
       try {
         const response = await fetchReviews(movieId);
-        setReviews(response);
-      } catch (error) {
-        console.error(error.message);
+
+        if (response.length > 0) {
+          setReviews(response);
+        } else {
+          throw new Error();
+        }
+      } catch {
+        setHasError(true);
+      } finally {
+        setIsLoading(false);
       }
     };
     getReviews();
@@ -23,7 +34,8 @@ const Reviews = () => {
 
   return (
     <>
-      {reviews?.length > 0 ? (
+      {isLoading && <Loader />}
+      {reviews && (
         <List>
           {reviews.map(({ id, author, content }) => {
             return (
@@ -34,7 +46,8 @@ const Reviews = () => {
             );
           })}
         </List>
-      ) : (
+      )}
+      {hasError && (
         <SorryText>Sorry... We don't have any reviews for this movie</SorryText>
       )}
     </>

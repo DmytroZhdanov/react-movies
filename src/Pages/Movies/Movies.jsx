@@ -1,27 +1,39 @@
 import { fetchMovieByQuery } from 'ApiService/ApiService';
-import { List, Section } from 'Pages/Home/Home.styled';
+import Loader from 'components/Loader/Loader';
+import MoviesList from 'components/MoviesList/MoviesList';
+import { SorryText } from 'components/Reviews/Reviews.styled';
+import { Section } from 'Pages/Home/Home.styled';
 import { useEffect } from 'react';
 import { useState } from 'react';
-import { Link, useLocation, useSearchParams } from 'react-router-dom';
+import { useSearchParams } from 'react-router-dom';
 import { Form } from './Movies.styled';
 
 const Movies = () => {
   const [movies, setMovies] = useState(null);
+  const [isLoading, setIsLoading] = useState(false);
+  const [hasError, setHasError] = useState(false);
+  const [inputValue, setInputValue] = useState('');
   const [searchParams, setSearchParams] = useSearchParams();
   const query = searchParams.get('query');
-  const location = useLocation();
 
   useEffect(() => {
     if (!query) return;
 
     const getMovies = async () => {
+      setIsLoading(true);
       try {
         const response = await fetchMovieByQuery(query);
-        setMovies(response.results);
-      } catch (error) {
-        console.error(error.message);
+        if (response.results.length > 0) {
+          setMovies(response.results);
+        } else {
+          throw new Error();
+        }
+      } catch {
+        setHasError(true);
+      } finally {
+        setIsLoading(false);
       }
-    }
+    };
     getMovies();
   }, [query]);
 
@@ -36,23 +48,26 @@ const Movies = () => {
     setSearchParams({ query: searchQuery });
   };
 
+  const handleChange = (e) => {
+    setInputValue(e.target.value);
+  };
+
   return (
     <Section>
+      {isLoading && <Loader />}
       <Form onSubmit={handleSubmit}>
-        <input type="text" name="query" />
+        <input
+          type="text"
+          name="query"
+          value={inputValue}
+          onChange={handleChange}
+        />
         <button>Search</button>
       </Form>
-      <List>
-        {movies?.map(({ id, title }) => {
-          return (
-            <li key={id}>
-              <Link to={`${id}`} state={{ from: location }}>
-                {title}
-              </Link>
-            </li>
-          );
-        })}
-      </List>
+      {movies && <MoviesList movies={movies} />}
+      {hasError && (
+        <SorryText>{`Sorry... We couldn't find any movie matching ${query}`}</SorryText>
+      )}
     </Section>
   );
 };

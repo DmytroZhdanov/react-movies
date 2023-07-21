@@ -1,5 +1,8 @@
 import { fetchMovieById } from 'ApiService/ApiService';
-import { Section, Title } from 'Pages/Home/Home.styled';
+import Loader from 'components/Loader/Loader';
+import MovieInfo from 'components/MovieInfo/MovieInfo';
+import { SorryText } from 'components/Reviews/Reviews.styled';
+import { Section } from 'Pages/Home/Home.styled';
 import { Suspense, useRef, useState } from 'react';
 import { useEffect } from 'react';
 import { Link, Outlet, useLocation, useParams } from 'react-router-dom';
@@ -7,19 +10,13 @@ import {
   AdditionalInfo,
   AdditionalTitle,
   BackBtn,
-  Image,
   List,
-  MainInfo,
-  SubTitle,
-  Text,
 } from './MovieDetails.styled';
 
 const MovieDetails = () => {
-  const [imagePath, setImagePath] = useState(null);
-  const [title, setTitle] = useState(null);
-  const [score, setScore] = useState(null);
-  const [overview, setOverview] = useState(null);
-  const [genres, setGenres] = useState(null);
+  const [movie, setMovie] = useState(null);
+  const [isLoading, setIsLoading] = useState(false);
+  const [hasError, setHasError] = useState(false);
 
   const location = useLocation();
   const backPath = useRef(location.state?.from ?? '/');
@@ -27,16 +24,14 @@ const MovieDetails = () => {
 
   useEffect(() => {
     const getMovieDetails = async () => {
+      setIsLoading(true);
       try {
         const response = await fetchMovieById(movieId);
-
-        setImagePath(response.poster_path);
-        setTitle(response.title);
-        setScore((response.vote_average * 10).toFixed());
-        setOverview(response.overview);
-        setGenres(response.genres.map(({ name }) => name).join(', '));
-      } catch (error) {
-        console.error(error.message);
+        setMovie(response);
+      } catch {
+        setHasError(true);
+      } finally {
+        setIsLoading(false);
       }
     };
     getMovieDetails();
@@ -44,33 +39,30 @@ const MovieDetails = () => {
 
   return (
     <Section>
-      <BackBtn to={backPath.current}>{`<- Go back`}</BackBtn>
-      <MainInfo>
-        <Image
-          src={imagePath && `https://image.tmdb.org/t/p/w500${imagePath}`}
-          alt={title}
-        />
-        <Title>{title}</Title>
-        <Text>User score: {score}%</Text>
-        <SubTitle>Overview</SubTitle>
-        <Text>{overview}</Text>
-        <SubTitle>Genres</SubTitle>
-        <Text>{genres}</Text>
-      </MainInfo>
-      <AdditionalInfo>
-        <AdditionalTitle>Additional information</AdditionalTitle>
-        <List>
-          <li>
-            <Link to="cast">Cast</Link>
-          </li>
-          <li>
-            <Link to="reviews">Reviews</Link>
-          </li>
-        </List>
-      </AdditionalInfo>
-      <Suspense fallback={<h1>Loading...</h1>}>
-        <Outlet />
-      </Suspense>
+      {isLoading && <Loader />}
+      {movie && (
+        <>
+          <BackBtn to={backPath.current}>{`<- Go back`}</BackBtn>
+          <AdditionalInfo>
+            <MovieInfo movie={movie} />
+            <AdditionalTitle>Additional information</AdditionalTitle>
+            <List>
+              <li>
+                <Link to="cast">Cast</Link>
+              </li>
+              <li>
+                <Link to="reviews">Reviews</Link>
+              </li>
+            </List>
+          </AdditionalInfo>
+          <Suspense fallback={<Loader />}>
+            <Outlet />
+          </Suspense>
+        </>
+      )}
+      {hasError && (
+        <SorryText>{`Sorry... Something went wrong :(`}</SorryText>
+      )}
     </Section>
   );
 };
