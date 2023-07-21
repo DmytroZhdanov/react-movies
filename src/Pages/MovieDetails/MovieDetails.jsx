@@ -61,14 +61,10 @@ const MovieDetails = () => {
         <AdditionalTitle>Additional information</AdditionalTitle>
         <List>
           <li>
-            <Link to="cast" state={{ from: backPath.current }}>
-              Cast
-            </Link>
+            <Link to="cast">Cast</Link>
           </li>
           <li>
-            <Link to="reviews" state={{ from: backPath.current }}>
-              Reviews
-            </Link>
+            <Link to="reviews">Reviews</Link>
           </li>
         </List>
       </AdditionalInfo>
