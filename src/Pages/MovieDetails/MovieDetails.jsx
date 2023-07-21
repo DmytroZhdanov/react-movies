@@ -1,6 +1,6 @@
 import { fetchMovieById } from 'ApiService/ApiService';
 import { Section, Title } from 'Pages/Home/Home.styled';
-import { Suspense, useState } from 'react';
+import { Suspense, useRef, useState } from 'react';
 import { useEffect } from 'react';
 import { Link, Outlet, useLocation, useParams } from 'react-router-dom';
 import {
@@ -22,7 +22,7 @@ const MovieDetails = () => {
   const [genres, setGenres] = useState(null);
 
   const location = useLocation();
-  const backPath = location.state?.from ?? '/';
+  const backPath = useRef(location.state?.from ?? '/');
   const { movieId } = useParams();
 
   useEffect(() => {
@@ -44,7 +44,7 @@ const MovieDetails = () => {
 
   return (
     <Section>
-      <BackBtn to={backPath}>{`<- Go back`}</BackBtn>
+      <BackBtn to={backPath.current}>{`<- Go back`}</BackBtn>
       <MainInfo>
         <Image
           src={imagePath && `https://image.tmdb.org/t/p/w500${imagePath}`}
@@ -61,12 +61,12 @@ const MovieDetails = () => {
         <AdditionalTitle>Additional information</AdditionalTitle>
         <List>
           <li>
-            <Link to="cast" state={{ from: backPath }}>
+            <Link to="cast" state={{ from: backPath.current }}>
               Cast
             </Link>
           </li>
           <li>
-            <Link to="reviews" state={{ from: backPath }}>
+            <Link to="reviews" state={{ from: backPath.current }}>
               Reviews
             </Link>
           </li>
