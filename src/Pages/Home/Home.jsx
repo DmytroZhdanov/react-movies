@@ -34,7 +34,7 @@ const Home = () => {
     <Section>
       <Title>Trending today</Title>
       {isLoading && <Loader />}
-      {dayTrends && <MoviesList trends={dayTrends} />}
+      {dayTrends && <MoviesList movies={dayTrends} />}
       {hasError && (
         <SorryText>Sorry... We couldn't find any day trends</SorryText>
       )}
